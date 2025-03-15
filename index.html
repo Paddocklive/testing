@@ -3,105 +3,161 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PPV Clone</title>
+  <title>PPV Style Video Site</title>
   <style>
     body {
-      font-family: sans-serif;
-      margin: 2rem;
-      background: #f8f9fa;
-      color: #333;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0e0e0e;
+      color: #fff;
     }
-    h1 {
-      color: #111;
+
+    header {
+      background: #111;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .video-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      padding: 1rem;
-      margin-bottom: 1rem;
+
+    header h1 {
+      color: #61ffb1;
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    nav a {
+      margin-left: 20px;
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    .banner {
+      background-color: #222;
+      padding: 10px 20px;
+      border-top: 2px solid #3af;
+      border-bottom: 2px solid #a33;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      margin: 20px;
+      border-left: 4px solid red;
+      padding-left: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 0 20px 40px;
+    }
+
+    .card {
+      background-color: #1a1a1a;
       border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+      transition: 0.3s;
     }
-    button {
-      margin-right: 1rem;
-      padding: 0.5rem 1rem;
-      background: #4CAF50;
-      color: white;
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card iframe {
+      width: 100%;
+      height: 150px;
       border: none;
-      border-radius: 4px;
-      cursor: pointer;
     }
-    a {
-      text-decoration: none;
-      color: #007BFF;
+
+    .card .info {
+      padding: 10px;
     }
-    #back {
-      display: inline-block;
-      margin-top: 1rem;
-      text-decoration: none;
-      color: #555;
+
+    .card .info h4 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .card .info span {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.2rem;
+      }
+
+      nav a {
+        margin-left: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>🎬 Pay-Per-View Videos</h1>
-  <div id="content"></div>
 
-  <script>
-    const videos = [
-      { id: '1', title: 'Ocean Sunset', price: 5, url: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-      { id: '2', title: 'Mountain Hike', price: 3, url: 'https://www.w3schools.com/html/movie.mp4' }
-    ];
+  <header>
+    <h1>ppv.land</h1>
+    <nav>
+      <a href="#">Request</a>
+      <a href="#">VODs</a>
+      <a href="#">Mirror list</a>
+      <a href="#">Discord</a>
+      <a href="#">Fishtank</a>
+    </nav>
+  </header>
 
-    const params = new URLSearchParams(window.location.search);
-    const page = params.get('page');
-    const videoId = params.get('id');
+  <div class="banner">
+    🔔 Check out our mirror list at <strong>PPV.ZONE</strong> to stay up to date on where to find us.
+  </div>
 
-    const container = document.getElementById('content');
+  <div class="section-title">🔴 Live now</div>
+  <div class="grid">
+    <!-- Example Card -->
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+      <div class="info">
+        <h4>Alabama Crimson Tide vs. Florida Gators</h4>
+        <span>📺 ESPN • 👀 162 viewers</span>
+      </div>
+    </div>
 
-    function buyVideo(id) {
-      localStorage.setItem(`video_${id}_purchased`, true);
-      alert("Purchase successful! You can now watch the video.");
-      location.reload();
-    }
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+      <div class="info">
+        <h4>UFC Fight Night 254</h4>
+        <span>📺 ESPN+ • 👀 2400 viewers</span>
+      </div>
+    </div>
 
-    if (page === 'watch' && videoId) {
-      const video = videos.find(v => v.id === videoId);
-      const access = localStorage.getItem(`video_${video.id}_purchased`);
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/lTTajzrSkCw" allowfullscreen></iframe>
+      <div class="info">
+        <h4>Nick Ball vs. TJ Doheny</h4>
+        <span>📺 DAZN • 👀 510 viewers</span>
+      </div>
+    </div>
 
-      if (!video) {
-        container.innerHTML = `<p>Video not found.</p>`;
-      } else if (access) {
-        container.innerHTML = `
-          <h2>${video.title}</h2>
-          <video controls width="640">
-            <source src="${video.url}" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <br/>
-          <a id="back" href="./">← Back to list</a>
-        `;
-      } else {
-        container.innerHTML = `
-          <h2>${video.title}</h2>
-          <p>You haven't purchased this video yet.</p>
-          <a id="back" href="./">← Back to list</a>
-        `;
-      }
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/oHg5SJYRHA0" allowfullscreen></iframe>
+      <div class="info">
+        <h4>Celtics at Nets</h4>
+        <span>📺 YES • 👀 183 viewers</span>
+      </div>
+    </div>
+    <!-- Add more cards here -->
+  </div>
 
-    } else {
-      videos.forEach(video => {
-        const access = localStorage.getItem(`video_${video.id}_purchased`);
-        const div = document.createElement('div');
-        div.className = 'video-card';
-        div.innerHTML = `
-          <h3>${video.title}</h3>
-          <p>Price: $${video.price}</p>
-          ${access ? '<span style="color:green;">✅ Purchased</span>' : `<button onclick="buyVideo('${video.id}')">Buy</button>`}
-          <a href="?page=watch&id=${video.id}">Watch</a>
-        `;
-        container.appendChild(div);
-      });
-    }
-  </script>
 </body>
 </html>
