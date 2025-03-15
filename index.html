@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PPV Clone</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2rem;
+      background: #f8f9fa;
+      color: #333;
+    }
+    h1 {
+      color: #111;
+    }
+    .video-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+    button {
+      margin-right: 1rem;
+      padding: 0.5rem 1rem;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    a {
+      text-decoration: none;
+      color: #007BFF;
+    }
+    #back {
+      display: inline-block;
+      margin-top: 1rem;
+      text-decoration: none;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 Pay-Per-View Videos</h1>
+  <div id="content"></div>
+
+  <script>
+    const videos = [
+      { id: '1', title: 'Ocean Sunset', price: 5, url: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+      { id: '2', title: 'Mountain Hike', price: 3, url: 'https://www.w3schools.com/html/movie.mp4' }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const page = params.get('page');
+    const videoId = params.get('id');
+
+    const container = document.getElementById('content');
+
+    function buyVideo(id) {
+      localStorage.setItem(`video_${id}_purchased`, true);
+      alert("Purchase successful! You can now watch the video.");
+      location.reload();
+    }
+
+    if (page === 'watch' && videoId) {
+      const video = videos.find(v => v.id === videoId);
+      const access = localStorage.getItem(`video_${video.id}_purchased`);
+
+      if (!video) {
+        container.innerHTML = `<p>Video not found.</p>`;
+      } else if (access) {
+        container.innerHTML = `
+          <h2>${video.title}</h2>
+          <video controls width="640">
+            <source src="${video.url}" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <br/>
+          <a id="back" href="./">← Back to list</a>
+        `;
+      } else {
+        container.innerHTML = `
+          <h2>${video.title}</h2>
+          <p>You haven't purchased this video yet.</p>
+          <a id="back" href="./">← Back to list</a>
+        `;
+      }
+
+    } else {
+      videos.forEach(video => {
+        const access = localStorage.getItem(`video_${video.id}_purchased`);
+        const div = document.createElement('div');
+        div.className = 'video-card';
+        div.innerHTML = `
+          <h3>${video.title}</h3>
+          <p>Price: $${video.price}</p>
+          ${access ? '<span style="color:green;">✅ Purchased</span>' : `<button onclick="buyVideo('${video.id}')">Buy</button>`}
+          <a href="?page=watch&id=${video.id}">Watch</a>
+        `;
+        container.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
